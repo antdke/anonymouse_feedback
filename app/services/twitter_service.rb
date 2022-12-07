@@ -1,60 +1,39 @@
 class TwitterService
-  def tweet!
+  def self.tweet!(message)
     require 'oauth/request_proxy/typhoeus_request' # TODO: delete
 
-    # INSERT HERE TWITTER DEVELOPER PORTAL > PROJECT > APP > KEYS (https://developer.twitter.com/en/portal/dashboard)
-    consumer_key = '' # Twitter App "API KEY"
-    consumer_secret = '' # Twitter App "API Key Secret"
-
-    if (consumer_key.length.zero? || consumer_secret.length.zero?)
-      abort 'Provide a "consumer_key" and "consumer_secret" in this file before running the script.'
-    end
-
-    consumer = OAuth::Consumer.new(consumer_key, consumer_secret,
-      site: 'https://api.twitter.com',
-      authorize_path: '/oauth/authenticate',
-      debug_output: false)
-
-    def get_request_token(consumer)
-      consumer.get_request_token()
-    end
-
-    def get_user_authorization(request_token)
-      puts "Visit this URL to authorize your app: #{request_token.authorize_url()}"
-      puts 'Enter PIN: '
-      gets.strip
-    end
-
-    def obtain_access_token(consumer, request_token, pin)
-      token = request_token.token
-      token_secret = request_token.secret
-      hash = { oauth_token: token, oauth_token_secret: token_secret }
-      request_token  = OAuth::RequestToken.from_hash(consumer, hash)
-
-      request_token.get_access_token({oauth_verifier: pin})
-    end
-
-    # PIN-based OAuth flow - Step 1
-    request_token = get_request_token(consumer)
-
-    # PIN-based OAuth flow - Step 2
-    pin = get_user_authorization(request_token)
-
-    # PIN-based OAuth flow - Step 3
-    access_token = obtain_access_token(consumer, request_token, pin)
-
-    credentials = {
-      "consumer_key" => consumer_key,
-      "consumer_secret" => consumer_secret,
-      "oauth_token" => access_token.params[:oauth_token],
-      "oauth_token_secret" => access_token.params[:oauth_token_secret]
+    body = {
+      "text": message # OPTIONAL: "Testing the Twitter API at #{Time.now.to_i}" # timestamp prevents "duplicate content" API error
     }
 
-    File.open('credentials.json', 'w') do |f|
-      f.write(JSON.pretty_generate(credentials))
+    @consumer = OAuth::Consumer.new(
+      ENV['twitter_consumer_key'],
+      ENV['twitter_consumer_secret'],
+    )
+    @token = OAuth::Token.new(ENV['twitter_oauth_token'], ENV['twitter_oauth_token_secret'])
+    options = {
+      method: :post,
+      headers: {
+        "content-type" => "application/json"
+      },
+      body: body.to_json
+    }
+
+    oauth_params = {:consumer => @consumer, :token => @token}
+
+    hydra = Typhoeus::Hydra.new
+    url = 'https://api.twitter.com/2/tweets'
+    req = Typhoeus::Request.new(url, options)
+    oauth_helper = OAuth::Client::Helper.new(req, oauth_params.merge(:request_uri => url))
+    req.options[:headers].merge!({"Authorization" => oauth_helper.header})
+
+    response = req.run
+
+    if response.success?
+      puts "Credentials work! Tweet:"
+      puts JSON.pretty_generate(JSON.parse(response.body))
+    else
+      puts "Credentials failed, please try generating again."
     end
-
-    puts "Credentials saved as 'credentials.json' - run 'ruby test_tweet.rb' to check."
-
   end
 end

@@ -48,6 +48,7 @@ gem "bootsnap", require: false
 
 gem "oauth"
 gem "typhoeus"
+gem "figaro"
 
 
 # Use Sass to process CSS
