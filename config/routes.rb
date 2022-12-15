@@ -6,4 +6,10 @@ Rails.application.routes.draw do
   # root "articles#index"
 
   root "pages#home"
+  
+  # HTTP verb > route > controller > action (method in a controller)
+  get 'search', to: 'pages#search'
+  post 'search', to: 'pages#search'
+
+  post 'feedbacks', to: 'pages#search' #TEMP
 end
