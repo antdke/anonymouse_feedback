@@ -1,4 +1,4 @@
-<div>
+<div class="mb-8">
   <form class="" action="search" method="post">
     <input type="text" name="recipient_handle" value="" placeholder="antdke">
     <input type="text" name="text" value="" placeholder="I really like your brand...">
@@ -6,8 +6,8 @@
   </form>
 </div>
 
-<% form_with model: @feedback do |form|%>
-  <% form.text_field :recipient_handle, placeholder: 'antdke' %>
-  <% form.text_field :text, placeholder: 'I really like your brand...' %>
-  <% form.submit 'Tweet' %>
+<%= form_with model: @feedback do |form|%>
+  <%= form.text_field :recipient_handle, placeholder: 'antdke' %>
+  <%= form.text_field :text, placeholder: 'TEST I really like your brand...' %>
+  <%= form.submit 'Tweet' %>
 <% end %>
