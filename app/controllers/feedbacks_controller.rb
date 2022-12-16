@@ -1,8 +1,7 @@
 class FeedbacksController < ApplicationController
   def create
-    #binding.break
-    # TwitterService.tweet!("hey #{request.params[:recipient_handle]}, here's some anon feedback for you >> \"#{request.params[:text]}\"")
-    puts "WOULD TWEET THIS #{params[:text]}"
+    TwitterService.tweet!("hey #{params[:feedback][:recipient_handle]}, here's some anon feedback for you >> \"#{params[:feedback][:text]}\"")
+    # puts "WOULD TWEET THIS #{params[:feedback][:text]}"
   end
 
   private
