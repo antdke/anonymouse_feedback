@@ -45,10 +45,18 @@
     return document.getElementById(id)
   }
   const message = $('feedback_text')
-  const wordCount = $('char_count')
+  const charCount = $('char_count')
 
 
   message.addEventListener('input', (e) => {
-    wordCount.textContent = `${message.value.length}`
+    charCount.textContent = `${message.value.length}`
+
+    if (message.value.length > 200 && message.value.length < 225) {
+      charCount.style.color = 'gold'
+    } else if (message.value.length >= 225) {
+      charCount.style.color = 'red'
+    } else {
+      charCount.style.color = 'black'
+    }
   })
 </script>
