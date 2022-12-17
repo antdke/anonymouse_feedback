@@ -17,7 +17,7 @@ class Feedback < ApplicationRecord
   def send_tweet
     puts "Sending Tweet!"
     #insert Twitter API logic here
-    TwitterService.tweet!("hey #{recipient_handle}, here's some anon feedback for you >> \"#{text}\"")
+    TwitterService.tweet!(self)
     # puts "HELLO FROM THE DB. HERE'S YOUR TEXT: #{self.text}"
   end
 

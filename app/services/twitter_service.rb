@@ -1,9 +1,13 @@
 class TwitterService
-  def self.tweet!(message)
+  def self.message(feedback)
+    ".@#{feedback.recipient_handle}, '#{feedback.text}' --Anon" # OPTIONAL: "Testing the Twitter API at #{Time.now.to_i}" # timestamp prevents "duplicate content" API error
+  end
+
+  def self.tweet!(feedback)
     require 'oauth/request_proxy/typhoeus_request' # TODO: delete
 
     body = {
-      "text": message # OPTIONAL: "Testing the Twitter API at #{Time.now.to_i}" # timestamp prevents "duplicate content" API error
+      "text": message(feedback)
     }
 
     @consumer = OAuth::Consumer.new(
