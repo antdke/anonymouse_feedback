@@ -1,18 +1,9 @@
 class Feedback < ApplicationRecord
-  
-  # logic
-  # 1. user creates a feedback record
-  # 2. tweet the "text" attribute of the feedback record, to the "recipient_handle" attribute
-
-  
-  # before_create :fart 
-
-  # def fart
-  #   puts "FARTING!!!!"
-  # end
-  
-  
   after_create :send_tweet
+
+  validates :recipient_handle, :text, presence: true
+  validates :recipient_handle, length: {maximum: 15}
+  validates :text, length: {maximum: 250}
 
   def send_tweet
     puts "Sending Tweet!"

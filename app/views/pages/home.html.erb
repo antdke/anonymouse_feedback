@@ -45,18 +45,18 @@
     return document.getElementById(id)
   }
   const message = $('feedback_text')
-  const charCount = $('char_count')
-
+  const charCounter = $('char_count')
 
   message.addEventListener('input', (e) => {
-    charCount.textContent = `${message.value.length}`
+    let messageLength = message.value.length
+    charCounter.textContent = `${messageLength}`
 
-    if (message.value.length > 200 && message.value.length < 225) {
-      charCount.style.color = 'gold'
-    } else if (message.value.length >= 225) {
-      charCount.style.color = 'red'
+    if (messageLength > 200 && messageLength < 225) {
+      charCounter.style.color = 'gold'
+    } else if (messageLength >= 225) {
+      charCounter.style.color = 'red'
     } else {
-      charCount.style.color = 'black'
+      charCounter.style.color = 'black'
     }
   })
 </script>
