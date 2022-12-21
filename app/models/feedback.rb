@@ -1,4 +1,6 @@
 class Feedback < ApplicationRecord
+  tweet_id = ""
+  
   before_create :sanitize
   after_create :send_tweet
 
@@ -13,8 +15,10 @@ class Feedback < ApplicationRecord
   
   def send_tweet
     puts "Sending Tweet!"
-    # TwitterService.tweet!(self)
-    puts "FROM DB, WOULD TWEET: #{self.text}"
+    tweet_id = TwitterService.tweet!(self)
+    Feedback.find_by(text: self.text).update(tweet_id: tweet_id)
+    #puts "FROM DB, WOULD TWEET: #{self.text}"
   end
+  
 
 end
