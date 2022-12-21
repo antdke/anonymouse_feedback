@@ -15,15 +15,8 @@ class Feedback < ApplicationRecord
   
   def send_tweet
     puts "Sending Tweet!"
-    tweet_id = TwitterService.tweet!(self)
-    update_feedback(tweet_id)
+    TwitterService.tweet!(self)
     #puts "FROM DB, WOULD TWEET: #{self.text}"
-  end
-  
-  def update_feedback(tweet_id)
-    Feedback.find_by(text: self.text).update(tweet_id: tweet_id)
-    tweet_url = "https://twitter.com/#{recipient_handle}/status/#{tweet_id}"
-    Feedback.find_by(text: self.text).update(tweet_url: tweet_url)
   end
 
 end

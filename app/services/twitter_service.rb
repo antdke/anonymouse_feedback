@@ -34,9 +34,16 @@ class TwitterService
     response = req.run
 
     if response.success?
+      tweet_id = JSON.parse(response.body)["data"]["id"] # return tweet id
+      twitter_username = ENV['twitter_username'] || "twitter"
+      tweet_url = "https://twitter.com/#{twitter_username}/status/#{tweet_id}"
+
+      feedback.update(tweet_id: tweet_id, tweet_url: tweet_url)
+
+      # TODO: Delete logs
       puts "Credentials work! Tweet:"
       puts JSON.pretty_generate(JSON.parse(response.body))
-      return JSON.parse(response.body)["data"]["id"] # return tweet id
+      
     else
       puts "Credentials failed, please try generating again."
     end

@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   
   # HTTP verb > route > controller > action (method in a controller)
   post 'feedbacks', to: 'feedbacks#create'
+  post 'feedbacks', to: 'pages#home'
 end

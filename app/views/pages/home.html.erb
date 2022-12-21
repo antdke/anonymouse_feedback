@@ -40,16 +40,11 @@
     <% end %>
   </div>
 
-  <div>
-     <tbody>
-    <% @feedbacks.each do |feedback| %>
-      <tr>
-        <td><%= feedback.tweet_url %></td>
-        <td><%= feedback.tweet_id %></td>
-      </tr>
-    <% end %>
-  </tbody>
-  </div>
+ <div>
+  <p><%= @feedback.tweet_url %></p>
+ </div>
+
+  
 </div>
 
 <script>
