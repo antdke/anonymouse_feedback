@@ -9,6 +9,7 @@
 
 <div> 
 
+
   <%= form_for(Feedback.new) do |form|%>
     <div class="max-w-xl mx-auto">
       <div>
@@ -37,6 +38,17 @@
         </div>
       </div>
     <% end %>
+  </div>
+
+  <div>
+     <tbody>
+    <% @feedbacks.each do |feedback| %>
+      <tr>
+        <td><%= feedback.tweet_url %></td>
+        <td><%= feedback.tweet_id %></td>
+      </tr>
+    <% end %>
+  </tbody>
   </div>
 </div>
 
